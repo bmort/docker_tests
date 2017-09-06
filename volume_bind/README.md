@@ -1,3 +1,9 @@
+This is a quick test of a very simple docker image what writes files
+to the local folder using the bind mount. This is demonstrated using
+docker run for a single container and a docker swarm service with a replication
+set of 2 that can be started with `docker stack deploy` or via the docker python
+API.
+
 To use with the docker engine:
 ```
 docker-compose build
