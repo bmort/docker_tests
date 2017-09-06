@@ -9,3 +9,8 @@ To use with docker swarm (use docker-compose build first to build the image):
 docker stack deploy -c docker-stack.yml test
 docker stack rm test
 ```
+
+To start the service with the python API use:
+```
+python3 launch_service.py
+```
