@@ -1,0 +1,12 @@
+version: '3.3'
+services:
+  file_writer:
+    image: bmort/file_writer:latest
+    command: file_writer.py
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    build:
+      context: .
+      dockerfile: Dockerfile
