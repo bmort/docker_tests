@@ -8,7 +8,6 @@ import time
 import sys
 import os
 import socket
-import requests
 import ntplib
 
 
@@ -26,13 +25,6 @@ def main():
         else:
             break
 
-    # url_ = 'https://www.docker.com/what-docker'
-    # data = requests.get(url_)
-    # print('*' * 80)
-    # print(data.text)
-    # print('*' * 80)
-
-
     file_ = open(file_name, 'w')
     client = ntplib.NTPClient()
     response = client.request('pool.ntp.org')
@@ -43,7 +35,7 @@ def main():
     file_.write('The time is %s (%s)\n' %
                 (time.strftime('%m%d%H%M%Y.%S', local_time), c_time))
     counter = 0
-    time_out = 5  # seconds
+    time_out = 10  # seconds
     elapsed = 0
     start_time = time.time()
     try:
