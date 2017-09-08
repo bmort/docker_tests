@@ -1,0 +1,14 @@
+version: '3.3'
+services:
+  test_app:
+    image: bmort/test_app:latest
+    ports:
+      - 5000:5000
+    healthcheck:
+      test: curl -f -s http://localhost:5000/ || exit 1
+      interval: 5s
+      timeout: 1s
+      retries: 3
+    build:
+      context: .
+      dockerfile: Dockerfile
