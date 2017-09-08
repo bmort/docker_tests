@@ -15,21 +15,26 @@ def main():
     """."""
     file_name = sys.argv[1] if len(sys.argv) >= 2 else \
         'temp_{}.txt'.format(socket.gethostname())
-    file_name_root = os.path.splitext(file_name)[0]
+    output_dir = 'output'
+    if not os.path.isdir(output_dir):
+        raise RuntimeError('Output directory missing, expecting directory: {}'
+                           .format(output_dir))
+    file_path = os.path.join(output_dir, file_name)
+    file_name_root = os.path.splitext(file_path)[0]
     counter = 1
     while True:
-        if os.path.exists(file_name):
-            file_name = '{}.{:02d}.txt'.format(file_name_root, counter)
+        if os.path.exists(file_path):
+            file_path = '{}.{:02d}.txt'.format(file_name_root, counter)
             print('-- Output file already exists ... Trying %s' % file_name)
             counter += 1
         else:
             break
 
-    file_ = open(file_name, 'w')
+    file_ = open(file_path, 'w')
     client = ntplib.NTPClient()
     response = client.request('pool.ntp.org')
 
-    print('Writing to file: %s' % file_name)
+    print('Writing to file: %s' % file_path)
     local_time = time.localtime(response.tx_time)
     c_time = str(time.ctime(response.tx_time))
     file_.write('The time is %s (%s)\n' %

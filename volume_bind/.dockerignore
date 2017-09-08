@@ -4,3 +4,5 @@ docker-compose.yml
 docker-stack.yml
 cleanup.sh
 temp*.txt
+venv
+output

@@ -4,8 +4,8 @@ services:
     image: bmort/file_writer:latest
     volumes:
       - type: bind
-        source: .
-        target: /app
+        source: ./output
+        target: /app/output
     deploy:
       replicas: 2
       placement:

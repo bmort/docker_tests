@@ -5,8 +5,8 @@ services:
     command: file_writer.py
     volumes:
       - type: bind
-        source: .
-        target: /app
+        source: ./output
+        target: /app/output
     build:
       context: .
       dockerfile: Dockerfile

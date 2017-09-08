@@ -15,7 +15,7 @@
 FROM python:3.6.2-alpine3.6
 LABEL maintainer="Benjamin Mort <ben.mort@gmail.com>"
 RUN pip install requests ntplib
-COPY . /app
 WORKDIR /app
+COPY file_writer.py /app/file_writer.py
 ENTRYPOINT ["python3"]
 CMD ["file_writer.py"]
