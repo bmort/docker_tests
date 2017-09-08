@@ -82,3 +82,10 @@ command and looking for a service with the image `bmort/file_writer:repo`.
 
 A good place to test this in a clean hosted docker enviroment is at
 [http://labs.play-with-docker.com/](http://labs.play-with-docker.com/).
+
+## 6. Current issues
+
+* If running on a swarm cluster with multiple nodes each node will to have
+  access to the output directory. If there is no shared file system between
+  nodes this directory must be created on each node. Docker volumes may solve
+  this problem.
