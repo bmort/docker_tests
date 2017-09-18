@@ -3,4 +3,4 @@ LABEL maintainer="Benjamin Mort <ben.mort@gmail.com>"
 WORKDIR /app
 COPY log_spammer.py /app/log_spammer.py
 ENTRYPOINT ["python3"]
-CMD ["log_spammer_app.py"]
+CMD ["log_spammer.py"]
