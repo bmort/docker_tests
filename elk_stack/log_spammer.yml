@@ -2,6 +2,6 @@ version: '3.3'
 
 services:
   test_app:
-    image: elk_test/test_app:latest
+    image: bmort/log_spammer:latest
     deploy:
       replicas: 3
