@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-  test_app:
+  log_spammer:
     image: bmort/log_spammer:latest
     deploy:
       replicas: 3
