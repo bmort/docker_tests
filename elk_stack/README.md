@@ -5,6 +5,7 @@ This is a quick test of ELK stack deployed through docker swarm.
 ## TODO
 
 - Add logtrail to kibana <https://github.com/sivasamyk/logtrail>
+  - <https://www.elastic.co/blog/elasticsearch-docker-plugin-management>
 
 ## References
 
