@@ -1,4 +1,4 @@
-version: '3'
+version: '3.3'
 
 services:
   elasticsearch:
@@ -41,7 +41,8 @@ services:
         delay: 30s
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:5.3.2
+    #image: docker.elastic.co/kibana/kibana:5.3.2
+    image: bmort/kibana-logtrail
     ports:
       - '80:5601'
     depends_on:
