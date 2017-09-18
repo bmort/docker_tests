@@ -2,11 +2,11 @@
 
 This is a quick test of ELK stack deployed through docker swarm.
 
-# TODO
+## TODO
 
 - Add logtrail to kibana <https://github.com/sivasamyk/logtrail>
 
-# References
+## References
 
 - <https://botleg.com/stories/log-management-of-docker-swarm-with-elk-stack>
 - <https://github.com/botleg/swarm-logging>
