@@ -1,0 +1,7 @@
+version: '3.3'
+
+services:
+  log_spammer:
+    image: bmort/logging_spammer:latest
+    deploy:
+      replicas: 3
