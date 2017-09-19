@@ -41,7 +41,8 @@ services:
         delay: 30s
 
   kibana:
-    image: bmort/kibana-logtrail
+    # image: bmort/kibana-logtrail
+    image: docker.elastic.co/kibana/kibana:5.3.2
     ports:
       - '80:5601'
     depends_on:
