@@ -3,5 +3,7 @@ version: '3.3'
 services:
   log_spammer:
     image: bmort/logging_spammer:latest
+    network:
+      - elk_default
     deploy:
       replicas: 3
