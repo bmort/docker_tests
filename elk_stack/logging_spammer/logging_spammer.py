@@ -34,7 +34,7 @@ def main():
         handler = logstash.LogstashHandler(host, port=5000, version=1)
         log.addHandler(handler)
     else:
-        handler = logging.StreamHandler(stream=sys.stderr)
+        handler = logging.StreamHandler(stream=sys.stdout)
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         handler.setFormatter(formatter)
         log.addHandler(handler)
