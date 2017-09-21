@@ -1,3 +1,4 @@
+[![](https://images.microbadger.com/badges/version/bmort/file_writer:repo.svg)](https://microbadger.com/images/bmort/file_writer:repo "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/image/bmort/file_writer:repo.svg)](https://microbadger.com/images/bmort/file_writer:repo "Get your own image badge on microbadger.com")
 
 # Writing a file using bind mount mode
