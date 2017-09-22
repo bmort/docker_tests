@@ -16,6 +16,15 @@ docker-machine create agent1
 docker-machine create agent2
 ```
 
+Set `vm.max_map_count` in each of the VMs so that elasticsearch does not give 
+`Out of Memory` errors (<https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html>). 
+
+```shell
+docker-machine ssh manager sudo sysctl -w vm.max_map_count=262144
+docker-machine ssh agent1 sudo sysctl -w vm.max_map_count=262144
+docker-machine ssh agent2 sudo sysctl -w vm.max_map_count=262144
+```
+
 Switch the context to the docker engine of the manager node:
 
 ```shell
@@ -36,10 +45,17 @@ docker-machine ssh agent2 docker swarm join --token `docker swarm join-token -q 
 docker stack deploy -c elk.yml elk
 ```
 
+### Check that the stack has been deployed
+
+```shell
+docker stack services elk
+docker stack ps elk
+```
+
 ### Test using a container printing to stdout
 
 ```shell
-docker stack deploy -c log_spammer spammer
+docker stack deploy -c log_spammer.yml spammer
 ```
 
 ### Test using a container using python-logstash handler
@@ -77,6 +93,8 @@ Kibana 5.
 
 - Add logtrail to kibana <https://github.com/sivasamyk/logtrail>
   - <https://www.elastic.co/blog/elasticsearch-docker-plugin-management>
+- Need to impose an ordering on starting containers in the stack?
+  - <https://stefanprodan.com/2017/docker-log-transport-and-aggregation-at-scale/>
 
 ## References
 
