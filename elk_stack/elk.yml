@@ -42,9 +42,11 @@ services:
 
   kibana:
     image: bmort/kibana-logtrail
-    # image: docker.elastic.co/kibana/kibana:5.3.2
+    # image: docker.elastic.co/kibana/kibana:5.5.3
     ports:
       - '80:5601'
+      volumes:
+      - ./kibana-logtrail/logtrail.conf:/opt/kibana/installedPlugins/logtrail/logtrail.json
     depends_on:
       - elasticsearch
     environment:
