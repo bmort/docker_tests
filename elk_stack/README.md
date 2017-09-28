@@ -11,18 +11,19 @@ Create a 3 node docker swarm cluster using docker-machine.
 Create the nodes:
 
 ```shell
-docker-machine create manager
-docker-machine create agent1
-docker-machine create agent2
+docker-machine create [--virtualbox-cpu-count "1"] [--virtualbox-memory "1024"] manager
+docker-machine create worker1
+docker-machine create worker2
 ```
 
 Set `vm.max_map_count` in each of the VMs so that elasticsearch does not give 
 `Out of Memory` errors (<https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html>). 
 
+
 ```shell
 docker-machine ssh manager sudo sysctl -w vm.max_map_count=262144
-docker-machine ssh agent1 sudo sysctl -w vm.max_map_count=262144
-docker-machine ssh agent2 sudo sysctl -w vm.max_map_count=262144
+docker-machine ssh worker1 sudo sysctl -w vm.max_map_count=262144
+docker-machine ssh worker2 sudo sysctl -w vm.max_map_count=262144
 ```
 
 Switch the context to the docker engine of the manager node:
@@ -35,8 +36,8 @@ Create the swarm:
 
 ```shell
 docker swarm init --advertise-addr `docker-machine ip manager`
-docker-machine ssh agent1 docker swarm join --token `docker swarm join-token -q worker` `docker-machine ip manager`:2377
-docker-machine ssh agent2 docker swarm join --token `docker swarm join-token -q worker` `docker-machine ip manager`:2377
+docker-machine ssh worker1 docker swarm join --token `docker swarm join-token -q worker` `docker-machine ip manager`:2377
+docker-machine ssh worker2 docker swarm join --token `docker swarm join-token -q worker` `docker-machine ip manager`:2377
 ```
 
 ### Deploy the ELK stack
@@ -51,6 +52,18 @@ docker stack deploy -c elk.yml elk
 docker stack services elk
 docker stack ps elk
 ```
+
+### (optional) Install logtrail Kibana plug-in
+
+```shell
+docker exec [kibana container id] kibana-plugin install https://github.com/sivasamyk/logtrail/releases/download/v0.1.20/logtrail-5.5.3-0.1.20.zip
+```
+
+```shell
+docker cp kibana-logtrail/logtrail.json [kibana container id]:/usr/share/kibana/plugins/logtrail/logtrail.json
+```
+
+
 
 ### Test using a container printing to stdout
 
@@ -80,8 +93,8 @@ docker stack deploy -c logging_spammer.yml spammer2
 docker stack rm spammer
 [docker stack rm spammer2]
 docker stack rm elk
-docker-machine stop manager agent1 agent2
-docker-machine rm manager agent1 agent2
+docker-machine stop manager worker1 worker2
+docker-machine rm manager worker1 worker2
 ```
 
 ## Configuring Kibana
@@ -95,6 +108,7 @@ Kibana 5.
   - <https://www.elastic.co/blog/elasticsearch-docker-plugin-management>
 - Need to impose an ordering on starting containers in the stack?
   - <https://stefanprodan.com/2017/docker-log-transport-and-aggregation-at-scale/>
+  - Consider using ansible instead of docker stack
 
 ## References
 

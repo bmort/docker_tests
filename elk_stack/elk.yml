@@ -1,8 +1,9 @@
 version: '3.3'
 
 services:
+
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.1
     environment:
       ES_JAVA_OPTS: '-Xms256m -Xmx256m'
       xpack.security.enabled: 'false'
@@ -15,10 +16,10 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == agent1
+          - node.hostname == worker1
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:5.5.3
+    image: docker.elastic.co/logstash/logstash:5.6.1
     volumes:
       - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     depends_on:
@@ -34,27 +35,34 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - logstash
+      - elasticsearch
     deploy:
       mode: global
       restart_policy:
         condition: on-failure
-        delay: 30s
+        delay: 15s
 
-  kibana:
-    image: bmort/kibana-logtrail
-    # image: docker.elastic.co/kibana/kibana:5.5.3
-    ports:
-      - '80:5601'
-      volumes:
-      - ./kibana-logtrail/logtrail.conf:/opt/kibana/installedPlugins/logtrail/logtrail.json
-    depends_on:
-      - elasticsearch
-    environment:
-      ELASTICSEARCH_URL: 'http://elasticsearch:9200'
-      # XPACK_SECURITY_ENABLED: 'false'
-      # XPACK_MONITORING_ENABLED: 'false'
-    deploy:
-      replicas: 1
+  # kibana:
+  #   image: bmort/kibana-logtrail
+  #   # image: docker.elastic.co/kibana/kibana:5.6.1
+  #   ports:
+  #     - '80:5601'
+  #   volumes:
+  #     # - ./kibana-logtrail/logtrail.json:/opt/kibana/installedPlugins/logtrail/logtrail.json
+  #     - ./kibana-logtrail/logtrail.json:/usr/share/kibana/plugins/logtrail/logtrail.json
+  #   depends_on:
+  #     - elasticsearch
+  #     - logspout
+  #     - logstash
+  #   environment:
+  #     ELASTICSEARCH_URL: 'http://elasticsearch:9200'
+  #     XPACK_SECURITY_ENABLED: 'false'
+  #     XPACK_MONITORING_ENABLED: 'false'
+  #   deploy:
+  #     replicas: 1
+  #     placement:
+  #       constraints:
+  #         - node.hostname == manager
 
 volumes:
   esdata:

@@ -6,4 +6,7 @@ services:
     network:
       - elk_default
     deploy:
-      replicas: 3
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 30s

@@ -4,4 +4,7 @@ services:
   log_spammer:
     image: bmort/log_spammer:latest
     deploy:
-      replicas: 3
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 30s
