@@ -3,10 +3,15 @@ version: '3.3'
 services:
   log_spammer:
     image: bmort/logging_spammer:latest
-    network:
-      - elk_default
+    networks:
+      - elk
     deploy:
       mode: global
       restart_policy:
         condition: on-failure
         delay: 30s
+
+networks:
+  elk:
+    external:
+      name: elk_default

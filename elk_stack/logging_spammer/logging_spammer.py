@@ -43,10 +43,10 @@ def main():
     try:
         while True:
             elapsed = time.time() - start_time
-            # log.info('hello from %s (%.1f s)', host_name, elapsed)
-            log.info('hello ...')
-            log.debug('hello again ...')
-            # log.debug('this is a debug message from %s', host_name)
+            log.info('hello from %s (%.1f s)', host_name, elapsed)
+            # log.info('hello ...')
+            # log.debug('hello again ...')
+            log.debug('this is a debug message from %s', host_name)
             time.sleep(random.uniform(0.01, 0.5))
     except KeyboardInterrupt:
         print('Exiting...')

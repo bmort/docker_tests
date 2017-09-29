@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+
+  kibana:
+
+    image: bmort/kibana-logtrail
+    # image: docker.elastic.co/kibana/kibana:5.6.1
+    ports:
+      - '80:5601'
+    volumes:
+      # - ./kibana-logtrail/logtrail.json:/opt/kibana/installedPlugins/logtrail/logtrail.json
+      - ./kibana-logtrail/logtrail.json:/usr/share/kibana/plugins/logtrail/logtrail.json
+    networks:
+      - elk
+    environment:
+      ELASTICSEARCH_URL: 'http://elasticsearch:9200'
+      XPACK_SECURITY_ENABLED: 'false'
+      XPACK_MONITORING_ENABLED: 'false'
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == manager
+
+networks:
+  elk:
+    external:
+      name: elk_default

@@ -44,6 +44,7 @@ docker-machine ssh worker2 docker swarm join --token `docker swarm join-token -q
 
 ```shell
 docker stack deploy -c elk.yml elk
+docker stack deploy -c kibana.yml kibana
 ```
 
 ### Check that the stack has been deployed
@@ -52,18 +53,6 @@ docker stack deploy -c elk.yml elk
 docker stack services elk
 docker stack ps elk
 ```
-
-### (optional) Install logtrail Kibana plug-in
-
-```shell
-docker exec [kibana container id] kibana-plugin install https://github.com/sivasamyk/logtrail/releases/download/v0.1.20/logtrail-5.5.3-0.1.20.zip
-```
-
-```shell
-docker cp kibana-logtrail/logtrail.json [kibana container id]:/usr/share/kibana/plugins/logtrail/logtrail.json
-```
-
-
 
 ### Test using a container printing to stdout
 
@@ -107,6 +96,7 @@ Kibana 5.
 - Add logtrail to kibana <https://github.com/sivasamyk/logtrail>
   - <https://www.elastic.co/blog/elasticsearch-docker-plugin-management>
 - Need to impose an ordering on starting containers in the stack?
+  - <https://docs.docker.com/compose/startup-order/>
   - <https://stefanprodan.com/2017/docker-log-transport-and-aggregation-at-scale/>
   - Consider using ansible instead of docker stack
 

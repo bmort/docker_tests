@@ -6,7 +6,7 @@
         "default_index": "logstash-*",
         "allow_url_parameter": false
       },
-      "tail_interval_in_seconds": 2,
+      "tail_interval_in_seconds": 1,
       "es_index_time_offset_in_seconds": 0,
       "display_timezone": "local",
       "display_timestamp_format": "MMM DD HH:mm:ss",
@@ -18,7 +18,7 @@
             "timestamp" : "@timestamp",
             "display_timestamp" : "@timestamp",
             "hostname" : "host",
-            "program": "docker.name",
+            "program": "path",
             "message": "message"
         }
       }

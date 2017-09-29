@@ -12,7 +12,7 @@ def main():
     try:
         while True:
             elapsed = time.time() - start_time
-            print('hello from %s (%.1f s)' % (host_name, elapsed))
+            print('hello from %s (%.1f s)' % (host_name, elapsed), flush=True)
             time.sleep(random.uniform(0.01, 0.5))
     except KeyboardInterrupt:
         print('Exiting...')
