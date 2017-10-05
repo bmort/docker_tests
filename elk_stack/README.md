@@ -40,6 +40,12 @@ docker-machine ssh worker1 docker swarm join --token `docker swarm join-token -q
 docker-machine ssh worker2 docker swarm join --token `docker swarm join-token -q worker` `docker-machine ip manager`:2377
 ```
 
+Label the node to run the elasticsearch db:
+
+```shell
+docker node update --label-add elk_db=true worker1
+```
+
 ### Deploy the ELK stack
 
 ```shell
@@ -50,8 +56,8 @@ docker stack deploy -c kibana.yml kibana
 ### Check that the stack has been deployed
 
 ```shell
-docker stack services elk
-docker stack ps elk
+docker stack services [elk]
+docker stack ps [elk]
 ```
 
 ### Test using a container printing to stdout
@@ -91,14 +97,6 @@ docker-machine rm manager worker1 worker2
 See <https://www.youtube.com/watch?v=mMhnGjp8oOI> for an introduction to 
 Kibana 5.
 
-## TODO
-
-- Add logtrail to kibana <https://github.com/sivasamyk/logtrail>
-  - <https://www.elastic.co/blog/elasticsearch-docker-plugin-management>
-- Need to impose an ordering on starting containers in the stack?
-  - <https://docs.docker.com/compose/startup-order/>
-  - <https://stefanprodan.com/2017/docker-log-transport-and-aggregation-at-scale/>
-  - Consider using ansible instead of docker stack
 
 ## References
 

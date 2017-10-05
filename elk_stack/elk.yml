@@ -16,7 +16,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == worker1
+          - node.labels.elk_db == true
 
   logstash:
     image: docker.elastic.co/logstash/logstash:5.6.1
