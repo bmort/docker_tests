@@ -29,15 +29,15 @@ docker-machine ssh worker2 sudo sysctl -w vm.max_map_count=262144
 Switch the context to the docker engine of the manager node:
 
 ```shell
-eval `docker-machine env manager`
+eval $(docker-machine env manager)
 ```
 
 Create the swarm:
 
 ```shell
-docker swarm init --advertise-addr `docker-machine ip manager`
-docker-machine ssh worker1 docker swarm join --token `docker swarm join-token -q worker` `docker-machine ip manager`:2377
-docker-machine ssh worker2 docker swarm join --token `docker swarm join-token -q worker` `docker-machine ip manager`:2377
+docker swarm init --advertise-addr $(docker-machine ip manager)
+docker-machine ssh worker1 docker swarm join --token $(docker swarm join-token -q worker) $(docker-machine ip manager):2377
+docker-machine ssh worker2 docker swarm join --token $(docker swarm join-token -q worker) $(docker-machine ip manager):2377
 ```
 
 Label the node to run the elasticsearch db:
@@ -84,10 +84,17 @@ docker stack deploy -c logging_spammer.yml spammer2
 
 ### Clean up stacks and machines
 
+Remove stacks:
+
 ```shell
 docker stack rm spammer
 [docker stack rm spammer2]
 docker stack rm elk
+```
+
+Remove docker-machine VMs:
+
+```shell
 docker-machine stop manager worker1 worker2
 docker-machine rm manager worker1 worker2
 ```
