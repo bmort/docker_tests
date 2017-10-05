@@ -7,8 +7,8 @@ services:
     image: bmort/kibana-logtrail
     ports:
       - '80:5601'
-    volumes:
-      - ./kibana-logtrail/logtrail.json:/usr/share/kibana/plugins/logtrail/logtrail.json
+    #volumes:
+    #  - ./kibana-logtrail/logtrail.json:/usr/share/kibana/plugins/logtrail/logtrail.json
     networks:
       - elk
     environment:
