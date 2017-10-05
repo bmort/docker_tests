@@ -5,11 +5,9 @@ services:
   kibana:
 
     image: bmort/kibana-logtrail
-    # image: docker.elastic.co/kibana/kibana:5.6.1
     ports:
       - '80:5601'
     volumes:
-      # - ./kibana-logtrail/logtrail.json:/opt/kibana/installedPlugins/logtrail/logtrail.json
       - ./kibana-logtrail/logtrail.json:/usr/share/kibana/plugins/logtrail/logtrail.json
     networks:
       - elk
