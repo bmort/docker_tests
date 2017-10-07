@@ -23,3 +23,9 @@ Label the node which should be used for the elasticsearch db:
 ```shell
 docker node update --label-add elk_db=true [node id]
 ```
+
+## Kibana
+
+Kibana can be found on by usign the IP of one of the nodes
+on the swarm cluster. To find the list of IPs use
+magnum cluster-show [cluster name]

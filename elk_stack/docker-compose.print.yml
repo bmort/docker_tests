@@ -1,8 +1,8 @@
 version: '3.3'
 
 services:
-  log_spammer:
-    image: bmort/log_spammer:latest
+  print_spammer:
+    image: bmort/print_spammer:latest
     deploy:
       mode: global
       restart_policy:

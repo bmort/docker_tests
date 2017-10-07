@@ -80,6 +80,7 @@ case $mode in
         info "Running: 'exit' will return to the orignal shell."
         eval "$(docker-machine env manager)"
         exec "$SHELL" --init-file "${HOME}"/.bash_profile -i
+        docker-machine ls
         ;;
     rm|clean|r)
         info "Removing local swarm cluster"
