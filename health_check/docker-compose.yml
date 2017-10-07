@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   test_app:
-    image: bmort/test_app:latest
+    image: bmort/health_check_test:latest
     ports:
       - 5000:5000
     healthcheck:
@@ -9,6 +9,12 @@ services:
       interval: 5s
       timeout: 1s
       retries: 3
+    deploy:
+      mode: global
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
     build:
       context: .
       dockerfile: Dockerfile

@@ -13,7 +13,7 @@ START_TIME = time.time()
 def hello_world():
     """."""
     elapsed = time.time() - START_TIME
-    return ('Hello from {}. Running for {:.1f} s'
+    return ('Hello from {}. Running for {:.1f} s\n'
             .format(socket.gethostname(), elapsed))
 
 
