@@ -41,7 +41,7 @@ function create_node() {
 }
 
 function usage() {
-    echo "Usage: $0 [mode == (start|rm)]"
+    echo "Usage: $0 [mode == (up|rm|connect)]"
 }
 
 if [ $# -ne 1 ]; then
@@ -50,49 +50,46 @@ if [ $# -ne 1 ]; then
 fi
 
 mode="$1"
+NUM_WORKERS=2
 
 case $mode in
-    start|up)
+    start|up|s)
         info "Starting local swarm cluster."
         create_node manager
         eval "$(docker-machine env manager)"
         docker swarm init \
             --advertise-addr "$(docker-machine ip manager)" \
             2> /dev/null
-        create_node worker1
-        docker-machine ssh worker1 \
-            docker swarm join \
-            --token "$(docker swarm join-token -q worker)" \
-            "$(docker-machine ip manager)":2377 \
-            2> /dev/null 
+        for i in $(seq 1 $NUM_WORKERS); do
+            create_node "worker$i"
+            docker-machine ssh "worker$i" \
+                docker swarm join \
+                --token "$(docker swarm join-token -q worker)" \
+                "$(docker-machine ip manager)":2377 \
+                2> /dev/null 
+        done
+        docker node update --label-add elk_db=true worker1
         info "Replacing the current shell to export the docker "\
              "daemon in node 'master'."
         info "Running: 'exit' will return to the orignal shell."
         exec "$SHELL" --init-file "${HOME}"/.bash_profile -i
         ;;
-    rm|clean)
+    connect|c)
+        info "Replacing the current shell to export the docker "\
+             "daemon in node 'master'."
+        info "Running: 'exit' will return to the orignal shell."
+        eval "$(docker-machine env manager)"
+        exec "$SHELL" --init-file "${HOME}"/.bash_profile -i
+        ;;
+    rm|clean|r)
         info "Removing local swarm cluster"
-        docker-machine rm manager worker1 -f
+        docker-machine rm manager -f
+        for i in $(seq 1 $NUM_WORKERS); do
+            docker-machine rm "worker$i" -f
+        done
         ;;
     *)
         error "unrecognised argument: $mode"
         usage
         ;;
 esac
-
-
-
-
-# create_node manager
-# create_node worker1
-
-# Create the swarm
-# docker swarm init --advertise-addr "$(docker-machine ip manager)"
-# docker-machine ssh worker1 \
-#     docker swarm join \
-#     --token "$(docker swarm join-token -q worker)" \
-#     "$(docker-machine ip manager)":2377
-
-# # Add a label to the worker to make sure the
-# docker node update --label-add elk_db=true worker1
-# eval "$(docker-machine env manager)"

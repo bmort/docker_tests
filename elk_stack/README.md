@@ -17,7 +17,7 @@ docker-machine create worker2
 ```
 
 Set `vm.max_map_count` in each of the VMs so that elasticsearch does not give 
-`Out of Memory` errors (<https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html>). 
+`Out of Memory` errors (<https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html>).
 
 
 ```shell
@@ -49,8 +49,7 @@ docker node update --label-add elk_db=true worker1
 ### Deploy the ELK stack
 
 ```shell
-docker stack deploy -c elk.yml elk
-docker stack deploy -c kibana.yml kibana
+docker stack deploy -c docker-compose.elk.yml elk
 ```
 
 ### Check that the stack has been deployed
@@ -63,7 +62,7 @@ docker stack ps [elk]
 ### Test using a container printing to stdout
 
 ```shell
-docker stack deploy -c log_spammer.yml spammer
+docker stack deploy -c docker-compose.log_spammer.yml s1
 ```
 
 ### Test using a container using python-logstash handler
@@ -79,7 +78,7 @@ docker service create --network elk_default -d bmort/logging_spammer
 or 
 
 ```shell
-docker stack deploy -c logging_spammer.yml spammer2
+docker stack deploy -c docker-compose.logging_spammer.yml s2
 ```
 
 ### Clean up stacks and machines
@@ -101,9 +100,8 @@ docker-machine rm manager worker1 worker2
 
 ## Configuring Kibana
 
-See <https://www.youtube.com/watch?v=mMhnGjp8oOI> for an introduction to 
+See <https://www.youtube.com/watch?v=mMhnGjp8oOI> for an introduction to
 Kibana 5.
-
 
 ## References
 

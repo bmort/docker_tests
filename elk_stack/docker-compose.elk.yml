@@ -19,9 +19,7 @@ services:
           - node.labels.elk_db == true
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:5.6.1
-    #volumes:
-    #  - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    image: bmort/logstash:latest
     depends_on:
       - elasticsearch
     deploy:
@@ -40,29 +38,22 @@ services:
       mode: global
       restart_policy:
         condition: on-failure
-        delay: 15s
+        delay: 20s
 
-  # kibana:
-  #   image: bmort/kibana-logtrail
-  #   # image: docker.elastic.co/kibana/kibana:5.6.1
-  #   ports:
-  #     - '80:5601'
-  #   volumes:
-  #     # - ./kibana-logtrail/logtrail.json:/opt/kibana/installedPlugins/logtrail/logtrail.json
-  #     - ./kibana-logtrail/logtrail.json:/usr/share/kibana/plugins/logtrail/logtrail.json
-  #   depends_on:
-  #     - elasticsearch
-  #     - logspout
-  #     - logstash
-  #   environment:
-  #     ELASTICSEARCH_URL: 'http://elasticsearch:9200'
-  #     XPACK_SECURITY_ENABLED: 'false'
-  #     XPACK_MONITORING_ENABLED: 'false'
-  #   deploy:
-  #     replicas: 1
-  #     placement:
-  #       constraints:
-  #         - node.hostname == manager
+  kibana:
+
+    image: bmort/kibana-logtrail
+    ports:
+      - '80:5601'
+    environment:
+      ELASTICSEARCH_URL: 'http://elasticsearch:9200'
+      XPACK_SECURITY_ENABLED: 'false'
+      XPACK_MONITORING_ENABLED: 'false'
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == manager
 
 volumes:
   esdata:
