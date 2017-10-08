@@ -20,7 +20,8 @@
             "hostname" : "host",
             "program": "path",
             "message": "message"
-        }
+        },
+        "message_format": "{{{docker.image}}-{{docker.name}} : {{{message}}}"
       }
     }
   ]

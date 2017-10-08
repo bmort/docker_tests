@@ -75,7 +75,7 @@ overlay network as the logstash endpoint.
 docker service create --network elk_default -d bmort/logging_spammer
 ```
 
-or 
+or
 
 ```shell
 docker stack deploy -c docker-compose.logging_spammer.yml s2

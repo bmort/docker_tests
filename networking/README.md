@@ -1,5 +1,17 @@
 # Test commands
 
+## Create swarm cluster of VMs
+
+```bash
+./swarm start
+```
+
+## Deploy using stack file
+
+```bash
+docker stack deploy -c docker-stack.yml test
+```
+
 ## Default networking
 
 ```bash

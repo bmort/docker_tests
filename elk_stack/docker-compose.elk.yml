@@ -20,8 +20,8 @@ services:
 
   logstash:
     image: bmort/logstash:latest
-    depends_on:
-      - elasticsearch
+    build:
+      context: ./logstash
     deploy:
       replicas: 1
 
@@ -31,9 +31,6 @@ services:
       ROUTE_URIS: 'logstash://logstash:5000'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - logstash
-      - elasticsearch
     deploy:
       mode: global
       restart_policy:
@@ -41,16 +38,24 @@ services:
         delay: 20s
 
   kibana:
-
     image: bmort/kibana-logtrail
+    build:
+      context: ./kibana-logtrail
     ports:
-      - '80:5601'
+      - '5601:5601'
     environment:
       ELASTICSEARCH_URL: 'http://elasticsearch:9200'
       XPACK_SECURITY_ENABLED: 'false'
       XPACK_MONITORING_ENABLED: 'false'
     deploy:
       replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 5s
+      restart_policy:
+        condition: on-failure
+        delay: 20s
+        max_attempts: 3
 
 volumes:
   esdata:

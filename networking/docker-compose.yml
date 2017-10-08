@@ -1,0 +1,10 @@
+version: 3.3
+
+services:
+
+  network_reporter:
+    image: bmort/network_reporter
+    build:
+      context: ./network_reporter
+    deploy:
+      mode: global
