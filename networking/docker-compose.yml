@@ -1,10 +1,17 @@
-version: 3.3
+version: "3.3"
 
 services:
 
-  network_reporter:
-    image: bmort/network_reporter
+  flask_server:
+    image: bmort/flask_hello
     build:
-      context: ./network_reporter
+      context: ./flask_hello
+    deploy:
+      mode: global
+
+  udp_socket_server:
+    image: bmort/udp_socket_server
+    build:
+      context: ./udp_socket_server
     deploy:
       mode: global

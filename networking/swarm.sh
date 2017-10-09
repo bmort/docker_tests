@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Script to initialise docker-machine to create a swarm
+# Script to use docker-machine to create a Docker Swarm VM cluster
 #
 # Run with:
 #   ./swarm.sh [mode]
@@ -13,15 +13,15 @@ YELLOW=$(tput setaf 3)
 RED=$(tput setaf 1)
 
 function error() {
-    echo -e "$RED$*$NORMAL"
+    echo -e "${RED}ERROR: ${NORMAL}${*}"
 }
 
 function info() {
-    echo -e "$GREEN$*$NORMAL"
+    echo -e "${GREEN}INFO: ${NORMAL}${*}"
 }
 
 function warn() {
-    echo -e "$YELLOW$*$NORMAL"
+    echo -e "${YELLOW}WARNING: ${NORMAL}${*}"
 }
 
 function create_node() {
@@ -71,7 +71,7 @@ case $mode in
                 docker swarm join \
                 --token "$(docker swarm join-token -q worker)" \
                 "$(docker-machine ip manager)":2377 \
-                2> /dev/null 
+                2> /dev/null
         done
         info "Replacing the current shell to export the docker "\
              "daemon in node 'master'."

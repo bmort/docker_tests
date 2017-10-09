@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #
-# Script to initialise docker-machine VMs for running this ELK stack example
+# Script to use docker-machine to create a Docker Swarm VM cluster
 #
 # Run with:
-#   ./local_swarm.sh [mode]
+#   ./swarm.sh [mode]
 #
 
 NORMAL=$(tput sgr0)
@@ -13,15 +13,15 @@ YELLOW=$(tput setaf 3)
 RED=$(tput setaf 1)
 
 function error() {
-    echo -e "$RED$*$NORMAL"
+    echo -e "${RED}ERROR: ${NORMAL}${*}"
 }
 
 function info() {
-    echo -e "$GREEN$*$NORMAL"
+    echo -e "${GREEN}INFO: ${NORMAL}${*}"
 }
 
 function warn() {
-    echo -e "$YELLOW$*$NORMAL"
+    echo -e "${YELLOW}WARNING: ${NORMAL}${*}"
 }
 
 function create_node() {
@@ -33,8 +33,13 @@ function create_node() {
         --virtualbox-cpu-count "2" \
         --virtualbox-memory "2048" \
         "${1}"
-        info "> Setting vm.max_map_count=262144"
+        info "Setting vm.max_map_count=262144"
         docker-machine ssh worker1 sudo sysctl -w vm.max_map_count=262144
+    elif [ "$STATUS" == "Running" ]; then
+        warn "> Node '$1' already running."
+    elif [ "$STATUS" == "Stopped" ]; then
+        info "Starting node: $1 ..."
+        docker-machine start "$1"
     else
         warn "> Node '$1' already exists. Status = $STATUS."
     fi
@@ -57,16 +62,18 @@ case $mode in
         info "Starting local swarm cluster."
         create_node manager
         eval "$(docker-machine env manager)"
+        info "Running swarm init on manager"
         docker swarm init \
             --advertise-addr "$(docker-machine ip manager)" \
             2> /dev/null
         for i in $(seq 1 $NUM_WORKERS); do
             create_node "worker$i"
+            info "Running swarm join on worker$1"
             docker-machine ssh "worker$i" \
                 docker swarm join \
                 --token "$(docker swarm join-token -q worker)" \
                 "$(docker-machine ip manager)":2377 \
-                2> /dev/null 
+                2> /dev/null
         done
         docker node update --label-add elk_db=true worker1
         info "Replacing the current shell to export the docker "\
