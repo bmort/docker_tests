@@ -2,25 +2,25 @@ version: "3.3"
 
 services:
 
-  dn:
-    image: alpine:3.6
+  flask_hello_default:
+    image: bmort/flask_hello
+    ports:
+      - 5602:5502
     deploy:
       mode: global
       labels:
         com.dn.description: "Default networking"
-    command: sleep 3600
 
-  hn:
-    image: alpine:3.6
+  flask_hello_host:
+    image: bmort/flask_hello
+    networks:
+      - outside
     deploy:
       mode: global
       labels:
         com.dn.description: "Host networking"
-    networks:
-      - my_host
-    dns_search: .
-    command: sleep 3600
 
 networks:
-  my_host:
-    driver: bridge
+  outside:
+    external:
+      name: "host"
