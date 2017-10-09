@@ -3,5 +3,6 @@ LABEL maintainer="Benjamin Mort <ben.mort@gmail.com>"
 RUN pip install flask>=0.12.2
 COPY app.py /app/app.py
 WORKDIR /app
+EXPOSE 5502
 ENTRYPOINT ["python3"]
 CMD ["app.py"]
